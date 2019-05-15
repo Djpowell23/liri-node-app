@@ -28,7 +28,6 @@ var spotify = new Spotify({
 // The album that the song is from
 
 // Spotify Request
-spotify.
 
 
 
