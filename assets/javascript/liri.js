@@ -8,11 +8,12 @@ var axios = require('axios');
 var keys = require("./keys.js");
 // OMDB Request
 var request = require('request');
+// Inquirer Input Package
+var inquirer = require("inquirer");
+
 // Spotify Request
 var Spotify = require('node-spotify-api');
 var spotify = new Spotify(keys.spotify);
-// Inquirer Input Package
-var inquirer = require("inquirer");
  
 var spotify = new Spotify({
   id: 'abfc91c429ef47f695447746ea7875a6',
@@ -41,6 +42,29 @@ function searchOMDB(queryURL) {
 }
 
 
+// Function to search Spotify for Song
+function searchSpotify(title, art, lim) {
+  spotify.search({ 
+    type: 'track', 
+    // Replaces spaces in title with '+'
+    query: '"' + title.replace(/ /g, '+') + '"', limit:lim
+  }).then(function(response) {
+    // Artist Name Accessibility
+    // console.log('artists name:', response.tracks.items[0].album.name);
+
+  }).catch(function(err){
+    console.log(err);
+  })
+}
+
+
+
+
+
+
+
+
+
 // Inquirer Flow
 inquirer.prompt([
   {
@@ -54,7 +78,7 @@ inquirer.prompt([
 
   // If User wants to find a movie
   if (command.userInput === 'Find Movie') {
-    console.log('User Command:', command);
+    // console.log('User Command:', command);
 
     // Ask which movie to search for
     inquirer.prompt([
@@ -80,13 +104,40 @@ inquirer.prompt([
     })
   }
 
-
-
-
-
-
-
   // If User wants to find a song
+  if (command.userInput === 'Find Song') {
+    // console.log('User Command:', command);
+
+    // Ask which song and artist to search for
+    inquirer.prompt([
+      {
+        type: 'input',
+        name: 'songTitle',
+        message: 'What song would you like me to search?'
+      },
+      {
+        type: 'input',
+        name: 'artist',
+        message: 'Who is the artist for this song?'
+      }
+    ]).then(function(song) {
+      // If song and artist field is empty
+      if (song.songTitle === '' && song.artist === '') {
+        // Default search for 'The Sign' by The Ace of Base
+        searchSpotify('The Sign','The Ace of Base',1);
+      }
+      // If user entered a song
+
+    })
+  }
+  
+
+
+
+
+
+
+
   // If User wants Liri to do what she's told
 })
 
