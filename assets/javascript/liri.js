@@ -25,7 +25,7 @@ var spotify = new Spotify({
 function searchOMDB(queryURL) { 
   // Take in the URL and console log Movie Info
   request(queryURL,function(err, response, body) {
-    console.log('response:', JSON.parse(body));
+    // console.log('response:', JSON.parse(body));
     if (!err && response.statusCode === 200) {
     // Log movie info
     console.log(`=======================================`);
@@ -50,8 +50,37 @@ function searchSpotify(title, art, lim) {
     query: '"' + title.replace(/ /g, '+') + '"', limit:lim
   }).then(function(response) {
     // Artist Name Accessibility
-    // console.log('artists name:', response.tracks.items[0].album.name);
+    // console.log('routing test:', response.tracks);
 
+    // Need to find the artist that you are searching for. Harry Styles is not the one I want.
+    for (i = 0; i < response.tracks.items.length; i++) {
+      if (response.tracks.items[i].album.artists[0].name === art) {
+        console.log(`=======================================`);
+        console.log('Artist:', response.tracks.items[0].album.artists[0].name);
+        console.log('Song Title:', response.tracks.items[i].name);
+        console.log('Album Title:', response.tracks.items[i].album.name);
+        // Preview cases
+        if (response.tracks.items[i].preview_url === null) {
+          console.log('Sorry! There is no available Spotify Preview for this song.');
+        } else {
+          console.log("Spotify Preview URL: ", response.tracks.items[i].preview_url);
+        }
+        console.log(`=======================================`);
+        // If the artist was undefined, populate the first result.
+      } else if (art === undefined) {
+        console.log(`=======================================`);
+        console.log('Artist:', response.tracks.items[0].album.artists[0].name);
+        console.log('Song Title:', response.tracks.items[i].name);
+        console.log('Album Title:', response.tracks.items[i].album.name);
+        // Preview cases
+        if (response.tracks.items[i].preview_url === null) {
+          console.log('Sorry! There is no available Spotify Preview for this song.');
+        } else {
+          console.log("Spotify Preview URL: ", response.tracks.items[i].preview_url);
+        }
+        console.log(`=======================================`);
+      }
+    }
   }).catch(function(err){
     console.log(err);
   })
@@ -123,10 +152,20 @@ inquirer.prompt([
     ]).then(function(song) {
       // If song and artist field is empty
       if (song.songTitle === '' && song.artist === '') {
+        console.log('empty search empty artist');
         // Default search for 'The Sign' by The Ace of Base
-        searchSpotify('The Sign','The Ace of Base',1);
-      }
+        searchSpotify("The Sign", "Ace of Base", 1)      
+      } else if (song.songTitle === '') {
+        console.log('Please enter a song title.');
+        // If no artist is specified, search without it.
+      } else if (song.artist === '') {
+        searchSpotify(song.songTitle, undefined, 1);
       // If user entered a song
+      } else {
+        // Capitalize first letter of each word?
+        var songArtist = song.artist.replace(/(^|\s)[a-z]/g,function(f){return f.toUpperCase();})
+        searchSpotify(song.songTitle, songArtist, 50)
+      }
 
     })
   }
