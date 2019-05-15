@@ -1,15 +1,16 @@
-// Require File System
-var fs = require('fs');
-
 // Require dotenv
 require("dotenv").config();
+// Require File System
+var fs = require('fs');
+// Axios Request
+var axios = require('axios');
 // Require keys
 var keys = require("./keys.js");
 // OMDB Request
 var request = require('request');
 // Spotify Request
 var Spotify = require('node-spotify-api');
-// var spotify = new Spotify(keys.spotify);
+var spotify = new Spotify(keys.spotify);
 // Inquirer Input Package
 var inquirer = require("inquirer");
  
@@ -20,21 +21,32 @@ var spotify = new Spotify({
 
 // Ex Input
 // node liri.js spotify-this-song '<song name here>'
-var songCmd = process.argv[2];
-var song = process.argv[3];
 
 // Artist
 // Song Name
 // Preview Link of Song from Spotify
 // The album that the song is from
 
-// Axios Request
-var axios = require('axios');
+// Spotify Request
+spotify.
 
-// Axios Request for omdb
-axios.get('http://www.omdbapi.com/?t=remember+the+titans&y=&plot=short&apikey=trilogy')
-.then(
-  function(response) {
+
+
+
+
+
+
+
+
+
+
+// OMDB Function if the choice is to search a movie
+function searchOMDB(url) { 
+  // Take in the URL and console log Movie Info
+  request(url,function(err, response) {
+    if (!error && response.statusCode === 200) {
+    // Log movie info
+    console.log(`=======================================`);
     console.log(`Title: ${response.data.Title}`);
     console.log(`IMDB Rating: ${response.data.imdbRating}`);
     console.log(`Rotten Tomatoes Rating: ${response.data.Ratings[1].Value}`);
@@ -42,5 +54,15 @@ axios.get('http://www.omdbapi.com/?t=remember+the+titans&y=&plot=short&apikey=tr
     console.log(`Language: ${response.data.Language}`);
     console.log(`Plot: ${response.data.Plot}`);
     console.log(`Actors: ${response.data.Actors}`);
-  }
-);
+    console.log(`=======================================`);
+    }
+  })
+}
+
+
+
+
+// Axios Request
+var axios = require('axios');
+
+
