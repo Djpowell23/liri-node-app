@@ -1,2 +1,2 @@
 # liri-test-app
-Testing different ways to achieve liri homework without messing up my own code too much.
+Using Terminal, the user is able to search for concert,song, or movie information.
