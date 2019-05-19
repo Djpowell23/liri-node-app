@@ -16,7 +16,9 @@ Following that, the user has four options:
   
 Following their option, the user simply types the name of the artist, movie, or song.
 
-### Example Syntax
-**node liri.js movie-this The Hangover
+**Example Syntax:** node liri.js movie-this The Hangover
+
+#### do-what-it-says
+This command reads text from a .txt file and performs a spotify song search based on the text inside of the file.
 
 Video showing flow: https://youtu.be/J7j77NvOxQ0
